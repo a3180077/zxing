@@ -58,6 +58,18 @@ public final class MatrixToImageWriter {
    * @return {@link BufferedImage} representation of the input
    */
   public static BufferedImage toBufferedImage(BitMatrix matrix, MatrixToImageConfig config) {
+    int[] rec = matrix.getEnclosingRectangle();
+		int resWidth = rec[2] + 1;
+		int resHeight = rec[3] + 1;
+		BitMatrix resMatrix = new BitMatrix(resWidth, resHeight);
+		resMatrix.clear();
+		for (int i = 0; i < resWidth; i++) {
+			for (int j = 0; j < resHeight; j++) {
+				if (matrix.get(i + rec[0], j + rec[1])) {
+					resMatrix.set(i, j);
+				}
+			}
+		}
     int width = matrix.getWidth();
     int height = matrix.getHeight();
     BufferedImage image = new BufferedImage(width, height, config.getBufferedImageColorModel());
